@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>HTML5 Geolocation</title>
+	<style>
+		body {
+			margin: 0;
+			text-align: center;
+		}
+		#map {
+			margin-top: 20px;
+			width: 400px;
+			height: 400px;
+			background-color: #f9f9f9;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<h1>HTML5 Geolocation</h1>
+	<p>Tekan tombol di bawah untuk mendeteksi lokasi Kamu</p>
+	<div>
+		<button id="detect">Dapatkan Lokasi</button>
+	</div>
+	<div id="map"></div>
+
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkE6oJvsyX4sRAw0QTt3R_gJClY0NtIFQ"></script>
+	<script src="gmaps.js"></script>
+	<script>
+		document.getElementById("detect").addEventListener("click", () => {
+			if("geolocation" in navigator) {
+				document.getElementById("map").style.display = "inline-block";
+				setTimeout(function() {
+					navigator.geolocation.getCurrentPosition((result) => {
+						var position = {
+							lat: result.coords.latitude,
+							lng: result.coords.longitude
+						}
+						var map = new GMaps({
+							div: '#map',
+							lat: position.lat,
+							lng: position.lng
+						});
+
+						map.addMarker({
+							position: position
+						})
+					});
+				}, 250);
+			}else{
+				console.error("Geolocation tidak tersedia pada browser kamu.")
+			}
+		});
+	</script>
+</body>
+</html>
